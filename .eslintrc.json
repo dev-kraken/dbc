@@ -1,3 +1,81 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "prettier",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "no-console": "warn",
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "CallExpression[callee.object.name='console'][callee.property.name=/^(log|warn|error|info|trace)$/]",
+        "message": "Please avoid using console.log(), console.warn(), console.error(), console.info(), and console.trace()."
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "selector": "variable",
+        "format": [
+          "camelCase"
+        ]
+      },
+      {
+        "selector": "function",
+        "format": [
+          "camelCase"
+        ],
+        "filter": {
+          "regex": "^cn$",
+          "match": false
+        }
+      },
+      {
+        "selector": "function",
+        "modifiers": [
+          "exported"
+        ],
+        "format": [
+          "PascalCase"
+        ],
+        "filter": {
+          "regex": "^cn$",
+          "match": false
+        }
+      }
+    ],
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "varsIgnorePattern": "^_",
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    // Disallow unused variables except those starting with underscore
+    "indent": [
+      "error",
+      2
+    ],
+    // Enforce consistent indentation
+    "max-len": [
+      "error",
+      {
+        "code": 120
+      }
+    ],
+    // Limit line length to improve readability
+    "no-magic-numbers": [
+      "error"
+    ],
+    // Disallow hardcoded magic numbers
+    "prefer-const": [
+      "error"
+    ]
+  }
 }
