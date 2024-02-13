@@ -51,7 +51,8 @@ const config = {
         card: {
           DEFAULT: 'hsl(var(--card))',
           foreground: 'hsl(var(--card-foreground))'
-        }
+        },
+        facebook: '#3b5998'
       },
       borderRadius: {
         lg: 'var(--radius)',

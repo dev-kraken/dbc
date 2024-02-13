@@ -1,4 +1,5 @@
 This is a [Dev Kraken](https://devkraken.com/) project bootstrapped.
+
 ## Getting Started
 
 First, run the development server:

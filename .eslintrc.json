@@ -23,7 +23,8 @@
       {
         "selector": "variable",
         "format": [
-          "camelCase"
+          "camelCase",
+          "PascalCase"
         ]
       },
       {
@@ -42,6 +43,7 @@
           "exported"
         ],
         "format": [
+          "camelCase",
           "PascalCase"
         ],
         "filter": {
@@ -68,10 +70,6 @@
       {
         "code": 120
       }
-    ],
-    // Limit line length to improve readability
-    "no-magic-numbers": [
-      "error"
     ],
     // Disallow hardcoded magic numbers
     "prefer-const": [
