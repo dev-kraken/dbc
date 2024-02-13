@@ -22,7 +22,7 @@ export const RefreshToken = async () => {
   const session: Session | null = await auth()
   const res = (await fetchWrapper.get(
     '/api/Auth/RefreshToken'
-  )) as RefreshTokenType
+  )) as unknown as RefreshTokenType
 
   if (session && res.accessToken) {
     session.user.accessToken = res.accessToken
