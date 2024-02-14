@@ -79,12 +79,10 @@ async function handleResponse(response: AxiosResponse) {
 
 // Create a wrapper object for making different types of requests
 export const AxiosWrapper = {
-  get: (url: string) => axiosInstance.get<AxiosResponse>(url),
-  post: (url: string, body: object) =>
-    axiosInstance.post<AxiosResponse>(url, body),
+  get: <T>(url: string) => axiosInstance.get<T>(url),
+  post: <T>(url: string, body: object) => axiosInstance.post<T>(url, body),
   put: (url: string, body: object) =>
     axiosInstance.put<AxiosResponse>(url, body),
   del: (url: string) => axiosInstance.delete<AxiosResponse>(url),
-  normalPost: (url: string, body: object) =>
-    axiosInstance.post<AxiosResponse>(url, body)
+  normalPost: <T>(url: string, body: object) => axiosInstance.post<T>(url, body)
 }

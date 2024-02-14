@@ -1,5 +1,5 @@
 import React from 'react'
-import {  signOut } from '@/auth'
+import { signOut } from '@/auth'
 import { getAllCards } from '@/action/card-action'
 
 const Dashboard = async () => {

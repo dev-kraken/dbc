@@ -10,6 +10,7 @@ import { AuthBackButton } from '@/components/auth/auth-back-button'
 interface AuthCardWrapperProps {
   children: React.ReactNode
   headerLabel: string
+  label: string
   backButtonLabel: string
   onBackButtonClick: string
   showSocialLogin?: boolean
@@ -18,6 +19,7 @@ interface AuthCardWrapperProps {
 export const AuthCardWrapper = ({
   children,
   headerLabel,
+  label,
   backButtonLabel,
   onBackButtonClick,
   showSocialLogin
@@ -25,7 +27,7 @@ export const AuthCardWrapper = ({
   return (
     <Card className='w-[400px] shadow-md'>
       <CardHeader>
-        <AuthHeader label={headerLabel} />
+        <AuthHeader title={headerLabel} label={label} />
       </CardHeader>
       <CardContent>{children}</CardContent>
       {showSocialLogin && (

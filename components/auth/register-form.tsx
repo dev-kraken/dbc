@@ -13,48 +13,87 @@ import {
   FormMessage
 } from '@/components/ui/form'
 
-import { LoginSchema } from '@/schemas/auth-schema'
+import { RegisterSchema } from '@/schemas/auth-schema'
 import * as z from 'zod'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { AuthFormError } from '@/components/auth/auth-form-error'
 import { AuthFormSuccess } from '@/components/auth/auth-form-success'
-import { login } from '@/action/auth'
+import { register } from '@/action/auth'
 import { ScaleLoader } from 'react-spinners'
 
-export const LoginForm = () => {
+export const RegisterForm = () => {
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
-  const form = useForm<z.infer<typeof LoginSchema>>({
-    resolver: zodResolver(LoginSchema),
+  const form = useForm<z.infer<typeof RegisterSchema>>({
+    resolver: zodResolver(RegisterSchema),
     defaultValues: {
+      fName: '',
+      lName: '',
       email: '',
-      password: ''
+      password: '',
+      confirmPassword: ''
     }
   })
 
-  const onSubmit = (values: z.infer<typeof LoginSchema>) => {
+  const onSubmit = (values: z.infer<typeof RegisterSchema>) => {
     setError('')
     setSuccess('')
     startTransition(() => {
-      login(values).then(data => {
+      register(values).then(data => {
         setError(data?.error)
-        // setSuccess(data?.success)
+        setSuccess(data?.success)
       })
     })
   }
   return (
     <AuthCardWrapper
-      headerLabel='Welcome back!'
-      label='Please enter your details.'
-      backButtonLabel="Don't have an account ?"
-      onBackButtonClick='/auth/register'
+      headerLabel='Create an account'
+      label="Let's get started with your account."
+      backButtonLabel='Already have an account?'
+      onBackButtonClick='/auth/login'
       showSocialLogin
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
           <div className='space-y-4'>
+            <div className='grid grid-cols-2 gap-2 '>
+              <FormField
+                control={form.control}
+                name='fName'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>First Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder='John'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name='lName'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Last Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={isPending}
+                        placeholder='Doe'
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
             <FormField
               control={form.control}
               name='email'
@@ -94,11 +133,30 @@ export const LoginForm = () => {
                 </FormItem>
               )}
             />
+            <FormField
+              control={form.control}
+              name='confirmPassword'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Confirm Password</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      disabled={isPending}
+                      placeholder='******'
+                      type='password'
+                      className='h-10 focus-visible:border-teal-500 focus-visible:ring-0'
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
           <AuthFormError message={error} />
           <AuthFormSuccess message={success} />
           <Button disabled={isPending} type='submit' className='w-full'>
-            {!isPending && 'Login'}
+            {!isPending && 'Create an account'}
             <ScaleLoader
               loading={isPending}
               color='#fff'
