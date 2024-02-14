@@ -1,7 +1,7 @@
 'use server'
 import { auth } from '@/auth'
 import { Session } from 'next-auth'
-import { fetchWrapper } from '@/lib/fetch-wrapper'
+import { AxiosWrapper } from '@/lib/axios-wrapper'
 
 type RefreshTokenType = {
   accessToken: string
@@ -20,7 +20,7 @@ export async function GetTokenDBC(): Promise<string | null> {
 
 export const RefreshToken = async () => {
   const session: Session | null = await auth()
-  const res = (await fetchWrapper.get(
+  const res = (await AxiosWrapper.get(
     '/api/Auth/RefreshToken'
   )) as unknown as RefreshTokenType
 

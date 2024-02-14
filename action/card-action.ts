@@ -1,7 +1,7 @@
 'use server'
 
-import { fetchWrapper } from '@/lib/fetch-wrapper'
+import { AxiosWrapper } from '@/lib/axios-wrapper'
 
 export async function getAllCards() {
-  return await fetchWrapper.get(`/api/Card/GetCardByUser`)
+  return await AxiosWrapper.get(`/api/Card/GetCardByUser`)
 }

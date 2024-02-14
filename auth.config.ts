@@ -2,6 +2,7 @@ import type { NextAuthConfig } from 'next-auth'
 
 import Credentials from 'next-auth/providers/credentials'
 import { LoginSchema } from '@/schemas/auth-schema'
+import axios, { AxiosResponse } from 'axios'
 
 type User = {
   id: string
@@ -16,12 +17,17 @@ async function fetchUser(
   password: string
 ): Promise<User | null> {
   try {
-    const response = await fetch(`${process.env.API_URL}/api/Auth/SignIn`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userName: email, password })
+    const response: AxiosResponse<User> = await axios({
+      method: 'post',
+      url: `${process.env.API_URL}/api/Auth/SignIn`,
+      data: {
+        userName: email,
+        password: password
+      }
     })
-    return await response.json()
+    const { data } = response
+    if (!data || !data.success) return null
+    return data
   } catch (error) {
     return null
   }

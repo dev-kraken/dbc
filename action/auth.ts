@@ -5,6 +5,7 @@ import { LoginSchema } from '@/schemas/auth-schema'
 import { signIn } from '@/auth'
 import { DefaultLoginRedirect } from '@/routes'
 import { AuthError } from 'next-auth'
+import { AxiosWrapper } from '@/lib/axios-wrapper'
 
 export const login = async (values: z.infer<typeof LoginSchema>) => {
   const validatedFields = LoginSchema.safeParse(values)
@@ -26,15 +27,15 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
   } catch (error) {
     if (error instanceof AuthError) {
       switch (error.type) {
-      case 'CredentialsSignin':
-        return {
-          error: 'Invalid credentials !'
+        case 'CredentialsSignin':
+          return {
+            error: 'Invalid credentials !'
+          }
+        default: {
+          return {
+            error: 'Something went wrong !'
+          }
         }
-      default: {
-        return {
-          error: 'Something went wrong !'
-        }
-      }
       }
     }
     throw error

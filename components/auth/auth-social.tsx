@@ -7,10 +7,10 @@ export const AuthSocial = () => {
   return (
     <div className='flex w-full items-center gap-x-2'>
       <Button variant='outline' className='w-full' size='lg'>
-        <FcGoogle className='h-5 w-5' />
+        <FcGoogle className='size-5' />
       </Button>
       <Button variant='outline' className='w-full' size='lg'>
-        <FaFacebook className='h-5 w-5 text-facebook' />
+        <FaFacebook className='size-5 text-facebook' />
       </Button>
     </div>
   )

@@ -1,9 +1,8 @@
 import React from 'react'
-import { auth, signOut } from '@/auth'
+import {  signOut } from '@/auth'
 import { getAllCards } from '@/action/card-action'
 
 const Dashboard = async () => {
-  // const session = await auth()
   const allCards = await getAllCards()
   return (
     <div>
