@@ -20,7 +20,7 @@ export const AuthHeader = ({ title, label }: AuthHeaderProps) => {
         xmlns='http://www.w3.org/2000/svg'
         viewBox='0 0 24 24'
         fill='none'
-        stroke='#14b8a6'
+        stroke='#9333EA'
         strokeWidth='2'
         strokeLinecap='round'
         strokeLinejoin='round'
@@ -30,7 +30,7 @@ export const AuthHeader = ({ title, label }: AuthHeaderProps) => {
       </svg>
       <h1
         className={cn(
-          'bg-gradient-to-br from-zinc-600 to-teal-600 bg-clip-text text-3xl font-semibold text-transparent',
+          'bg-gradient-to-br from-zinc-400 to-purple-600 bg-clip-text text-3xl font-semibold text-transparent',
           font.className
         )}
       >
