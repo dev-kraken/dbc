@@ -101,7 +101,7 @@ export const LoginForm = () => {
             {!isPending && 'Login'}
             <ScaleLoader
               loading={isPending}
-              color='#fff'
+              color='#A855F7'
               height={20}
               width={4}
               aria-label='Loading...'

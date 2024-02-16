@@ -8,7 +8,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
       <div className='hidden h-full md:block'>
         <Sidebar />
       </div>
-      <div className='grid size-full md:pl-60'>
+      <div className='grid size-full pl-0 md:pl-20 lg:pl-60'>
         <SidebarHeader />
         {children}
       </div>

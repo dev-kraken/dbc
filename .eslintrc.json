@@ -66,13 +66,13 @@
       "error",
       2
     ],
-//    // Enforce consistent indentation
-//    "max-len": [
-//      "error",
-//      {
-//        "code": 120
-//      }
-//    ],
+    // Enforce consistent indentation
+    "max-len": [
+      "error",
+      {
+        "code": 135
+      }
+    ],
     // Disallow hardcoded magic numbers
     "prefer-const": [
       "error"
