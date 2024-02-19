@@ -2,16 +2,9 @@ import { LuLayoutDashboard } from 'react-icons/lu'
 import { TbCards } from 'react-icons/tb'
 import { MdOutlineLeaderboard } from 'react-icons/md'
 import { IoQrCodeOutline, IoSettingsOutline } from 'react-icons/io5'
-import { IconType } from 'react-icons'
+import { HomeSidebar } from '@/types/sidebar'
 
-type HomeSidebarRoutesT = {
-  title: string
-  icon: IconType
-  href: string
-  label?: string
-}
-
-export const HomeSidebarRoutes: HomeSidebarRoutesT[] = [
+export const HomeSidebarRoutes: HomeSidebar[] = [
   {
     title: 'Dashboard',
     icon: LuLayoutDashboard,

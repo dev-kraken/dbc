@@ -8,19 +8,11 @@ import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import { usePathname } from 'next/navigation'
-import { IconType } from 'react-icons'
-
-type HomeSidebarRoutesT = {
-  title: string
-  icon: IconType
-  href: string
-  label?: string
-  variant?: string
-}
+import { HomeSidebarRoutes } from '@/types/sidebar'
 
 interface NavProps {
   isCollapsed: boolean
-  links: HomeSidebarRoutesT[]
+  links: HomeSidebarRoutes[]
   menuTitle?: string
 }
 
@@ -47,7 +39,7 @@ export function NavKraken({ links, isCollapsed, menuTitle }: NavProps) {
                     <span className='sr-only'>{link.title}</span>
                   </Link>
                 </TooltipTrigger>
-                <TooltipContent side='right' className='flex items-center gap-4'>
+                <TooltipContent side='right' className='flex items-center gap-4 bg-purple-700'>
                   {link.title}
                   {link.label && <span className='ml-auto text-muted-foreground'>{link.label}</span>}
                 </TooltipContent>

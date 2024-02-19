@@ -1,10 +1,5 @@
 import Image from 'next/image'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { MdEdit, MdMoreVert, MdOutlineDeleteOutline } from 'react-icons/md'
 import { RxExternalLink } from 'react-icons/rx'
 import { ImageURL } from '@/data/images-url'

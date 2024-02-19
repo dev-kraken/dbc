@@ -3,7 +3,7 @@ export const /**
    * These routes do not require authentication
    * @type {string[]}
    */
-  publicRoutes: string[] = ['/', '/auth/new-verification'],
+  publicRoutes: string[] = ['/auth/new-verification'],
   /**
    * An array of routes that are used for authentication
    * These routes will redirect logged-in users to /settings
