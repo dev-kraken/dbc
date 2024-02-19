@@ -12,14 +12,11 @@ export const Sidebar = () => {
         <SiArlo size={32} color='#9333EA' />
         <h1 className='hidden text-2xl font-bold lg:block'>DBC</h1>
       </div>
-      <nav className='grow'>
-        <HomeMenu />
-      </nav>
+      <HomeMenu />
       <div>
         <form
           action={async () => {
             'use server'
-
             await signOut()
           }}
         >

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Suspense } from 'react'
 import { NewVerificationForm } from '@/components/auth/new-verification-form'
 
 export const metadata = {
@@ -6,7 +6,11 @@ export const metadata = {
   description: 'Verify your email'
 }
 const NewVerificationPage = () => {
-  return <NewVerificationForm />
+  return (
+    <Suspense fallback='Loading...'>
+      <NewVerificationForm />
+    </Suspense>
+  )
 }
 
 export default NewVerificationPage

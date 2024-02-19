@@ -4,36 +4,37 @@ import { MdOutlineLeaderboard } from 'react-icons/md'
 import { IoQrCodeOutline, IoSettingsOutline } from 'react-icons/io5'
 import { IconType } from 'react-icons'
 
-type SidebarRouteHome = {
-  label: string
+type HomeSidebarRoutesT = {
+  title: string
   icon: IconType
-  route: string
+  href: string
+  label?: string
 }
 
-export const HomeSidebarRoutes: SidebarRouteHome[] = [
+export const HomeSidebarRoutes: HomeSidebarRoutesT[] = [
   {
-    label: 'Dashboard',
+    title: 'Dashboard',
     icon: LuLayoutDashboard,
-    route: '/dashboard'
+    href: '/dashboard'
   },
   {
-    label: 'Cards',
+    title: 'Cards',
     icon: TbCards,
-    route: '/dashboard/cards'
+    href: '/dashboard/cards'
   },
   {
-    label: 'Leads',
+    title: 'Leads',
     icon: MdOutlineLeaderboard,
-    route: '/conversation'
+    href: '/conversation'
   },
   {
-    label: 'QrCode',
+    title: 'QrCode',
     icon: IoQrCodeOutline,
-    route: '/qrcode'
+    href: '/qrcode'
   },
   {
-    label: 'Settings',
+    title: 'Settings',
     icon: IoSettingsOutline,
-    route: '/settings'
+    href: '/settings'
   }
 ]
