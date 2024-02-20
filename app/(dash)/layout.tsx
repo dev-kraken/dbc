@@ -1,6 +1,7 @@
 import React from 'react'
 import { Sidebar } from '@/components/sidebar/sidebar'
 import { SidebarHeader } from '@/components/sidebar/sidebar-header'
+import { Toaster } from 'react-hot-toast'
 
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
@@ -9,6 +10,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         <Sidebar />
       </div>
       <div className='grid size-full pl-0 md:pl-20 lg:pl-60'>
+        <Toaster position='top-center' />
         <SidebarHeader />
         {children}
       </div>

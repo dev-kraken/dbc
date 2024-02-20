@@ -4,7 +4,7 @@ interface AuthFormErrorProps {
   message?: string
 }
 
-export const ModelFormError = ({ message }: AuthFormErrorProps) => {
+export const DialogFormError = ({ message }: AuthFormErrorProps) => {
   if (!message) return null
   return (
     <div

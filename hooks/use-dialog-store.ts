@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 
-export type ModalType = 'CreateUpdateCard'
+export type ModalType = 'CreateUpdateCard' | 'SetAvatarSize'
 
 interface ModalData {
   server?: string
