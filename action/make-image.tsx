@@ -41,6 +41,21 @@ export function ImgToBase64(file: Blob): Promise<string> {
   })
 }
 
+export function blobToBase64(blob: Blob): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(blob);
+    reader.onloadend = () => {
+      if (reader.result) {
+        resolve(reader.result.toString());
+      } else {
+        reject(new Error('Failed to convert Blob to base64.'));
+      }
+    };
+    reader.onerror = reject;
+  });
+}
+
 export async function getImageFile(url: string): Promise<File | null> {
   try {
     const response = await fetch(url)

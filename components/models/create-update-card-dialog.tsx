@@ -11,18 +11,17 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { AddCardSchema } from '@/schemas/add-card-schema'
 import * as z from 'zod'
-import { GetImageData, ImgToBase64 } from '@/action/make-image'
-import { IoIosCloudUpload } from 'react-icons/io'
+
 import { MdDelete } from 'react-icons/md'
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { IoAddOutline } from 'react-icons/io5'
-import { cn } from '@/lib/utils'
 import { DialogFormError } from '@/components/models/dialog-form-error'
 import { encode } from 'js-base64'
 import { cardAddUpdate } from '@/action/card-action'
 import toast from 'react-hot-toast'
-import { AvatarResize } from '@/components/resize-image/avatar-resize'
+import { AvatarDropzone } from '@/components/upload-image/AvatarDropzone'
+import AvatarResize from '@/components/upload-image/AvatarResize'
 
 export const CreateUpdateCard = () => {
   const [preview, setPreview] = useState<string | null>(null)
@@ -45,21 +44,21 @@ export const CreateUpdateCard = () => {
     setError('')
     startTransition(async () => {
       try {
-        const imageFile = values.cardProfile?.[0]
-        if (!imageFile) {
-          new Error('Upload your icon.')
+        if (!image) {
+          setError('Please set Card Profile image size')
+          return
         }
-        const base64Image = await ImgToBase64(imageFile)
         const cardAdd = {
           cardName: values.name,
           imageOriginalName: values.cardProfile?.[0].name,
-          imageBase64: encode(base64Image)
+          imageBase64: encode(image)
         }
         cardAddUpdate(cardAdd).then(data => {
           setError(data?.error)
           if (data?.success) {
             toast.success('Card added successfully !')
             setPreview('')
+            setImage('')
             form.reset()
             onClose()
           }
@@ -76,6 +75,22 @@ export const CreateUpdateCard = () => {
     form.reset()
     onClose()
   }
+
+  const onDrop = (acceptedFiles: File[]) => {
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader()
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => {
+        console.log('file reading has failed')
+      }
+      reader.onload = () => {
+        form.setValue('cardProfile', [file] as unknown as string)
+        setPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
   return (
     <DialogWrapper
       modelWidth='w-96'
@@ -92,7 +107,9 @@ export const CreateUpdateCard = () => {
         <form id='add-card' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
           <div className='space-y-4'>
             <div className='flex flex-col items-center justify-center text-center'>
-              {preview && !image && <AvatarResize image={preview} setPreview={setPreview} setImage={setImage} />}
+              {preview && !image && (
+                <AvatarResize image={preview} setPreview={setPreview} setImage={setImage} setError={setError} />
+              )}
               {preview && image && (
                 <div className='relative mx-auto w-fit'>
                   <Avatar className='mx-auto size-28 border-purple-400 border shadow-md'>
@@ -115,33 +132,11 @@ export const CreateUpdateCard = () => {
                 name='cardProfile'
                 render={({ field: { onChange, value, ...rest } }) => (
                   <FormItem>
-                    <FormControl className={cn(preview && 'hidden')}>
-                      <div className='flex items-center justify-center w-80'>
-                        <label
-                          htmlFor='dropzone-file'
-                          className='flex flex-col items-center justify-center w-full h-24 border-2 border-purple-300 border-dashed rounded-lg cursor-pointer
-                            bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-purple-100/20'
-                        >
-                          <div className='flex flex-col items-center justify-center pt-5 pb-6'>
-                            <IoIosCloudUpload size={26} className='text-purple-500' />
-                            <p className='mb-2 text-sm text-purple-400'>
-                              <span className='font-semibold'>Click to upload</span>
-                            </p>
-                            <p className='text-xs text-gray-500'>JPG, JPEG, PNG WEBP</p>
-                          </div>
-                          <Input
-                            id='dropzone-file'
-                            type='file'
-                            className='hidden'
-                            {...rest}
-                            onChange={async event => {
-                              const { files, displayUrl } = await GetImageData(event)
-                              setPreview(displayUrl)
-                              onChange(files)
-                            }}
-                          />
-                        </label>
-                      </div>
+                    <FormControl>
+                      <>
+                        {!preview && <AvatarDropzone onDrop={onDrop} />}
+                        <Input disabled={isPending} type='file' className='hidden' {...rest} />
+                      </>
                     </FormControl>
                     <FormMessage />
                   </FormItem>

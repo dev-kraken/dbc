@@ -1,19 +1,10 @@
+"use client"
 import React from 'react'
-import { signOut } from '@/auth'
 
-const Dashboard = async () => {
+const Dashboard = () => {
   return (
     <div>
-
-      <form
-        action={async () => {
-          'use server'
-
-          await signOut()
-        }}
-      >
-        <button type='submit'>SignOut</button>
-      </form>
+      hello
     </div>
   )
 }

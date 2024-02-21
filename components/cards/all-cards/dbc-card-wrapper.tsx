@@ -17,12 +17,10 @@ export const DbcCardWrapper = ({ children, card }: DbcCardWrapperProps) => {
       </CardHeader>
       <CardContent className='mt-2 space-y-1 px-4'>
         <p className='text-xs italic text-muted-foreground'>Card Name</p>
-        <h2 className='text-2xl font-medium text-zinc-700'>{children}</h2>
+        <h2 className='text-2xl font-medium text-zinc-700 truncate'>{children}</h2>
       </CardContent>
       <CardFooter className='flex gap-2 px-4'>
-        <Button className='w-full bg-purple-400 hover:bg-purple-500'>
-          Edit
-        </Button>
+        <Button className='w-full bg-purple-400 hover:bg-purple-500'>Edit</Button>
         <Button className='w-full' variant='secondary'>
           Preview
         </Button>

@@ -13,7 +13,6 @@ const Cards = async () => {
         <DbcCreateNewCardButton />
       </div>
       <div className='grid grid-cols-1 gap-3 p-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4'>
-        {/* eslint-disable-next-line react/jsx-no-undef */}
         <Suspense fallback={<Loading />}>
           {allCards?.map(card => (
             <DbcCardWrapper key={card.id} card={card}>

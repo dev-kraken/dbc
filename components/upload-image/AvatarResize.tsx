@@ -1,39 +1,54 @@
-import { useCallback, useState } from 'react'
+import React, { useCallback, useState } from 'react'
 import Cropper, { Area } from 'react-easy-crop'
 import getCroppedImg from '@/action/crop-image'
 import { Button } from '@/components/ui/button'
 import { Slider } from '@/components/ui/slider'
+import toast from 'react-hot-toast'
 
 interface AvatarResizeProps {
   image: string
   setPreview: (preview: string | null) => void
   setImage: (image: string | null) => void
+  setError: (error: string | undefined) => void
 }
 
-export const AvatarResize = ({ image, setPreview, setImage }: AvatarResizeProps) => {
-  const [crop, setCrop] = useState({ x: 0, y: 0 })
+const AvatarResize: React.FC<AvatarResizeProps> = ({ image, setPreview, setImage, setError }) => {
+  const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const [zoom, setZoom] = useState<number>(1)
-  const [rotation, setRotation] = useState(0)
+  const [rotation, setRotation] = useState<number>(0)
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null)
 
-  const onCropComplete = useCallback((croppedArea: Area, croppedAreaPixels: Area) => {
+  const onCropComplete = useCallback((_: Area, croppedAreaPixels: Area) => {
     setCroppedAreaPixels(croppedAreaPixels)
+  }, [])
+
+  const handleZoomChange = useCallback((zoom: number) => {
+    // Change here
+    setZoom(zoom)
+  }, [])
+
+  const handleRotationChange = useCallback((rotation: number) => {
+    // Change here
+    setRotation(rotation)
+    return rotation
   }, [])
 
   const showCroppedImage = useCallback(async () => {
     try {
-      const croppedImage: string | null = await getCroppedImg(image, croppedAreaPixels as Area, rotation)
+      const croppedImage: string | null = await getCroppedImg(image, croppedAreaPixels!, rotation)
+      setError('')
       setPreview(croppedImage || '')
       setImage(croppedImage || '')
-    } catch (e) {
-      console.error(e)
+    } catch (error) {
+      toast.error(error as string)
     }
-  }, [image, croppedAreaPixels, rotation, setPreview, setImage])
+  }, [image, croppedAreaPixels, rotation, setError, setPreview, setImage])
 
-  const onClose = useCallback(() => {
+  const handleClose = useCallback(() => {
     setPreview(null)
     setImage(null)
-  }, [setImage, setPreview])
+    setError('')
+  }, [setPreview, setImage, setError])
 
   return (
     <div className='space-y-1'>
@@ -50,8 +65,8 @@ export const AvatarResize = ({ image, setPreview, setImage }: AvatarResizeProps)
           aspect={4 / 3}
           onCropChange={setCrop}
           onCropComplete={onCropComplete}
-          onZoomChange={setZoom}
-          onRotationChange={setRotation}
+          onZoomChange={handleZoomChange}
+          onRotationChange={handleRotationChange}
           cropShape='round'
           cropSize={{ width: 170, height: 170 }}
         />
@@ -65,27 +80,23 @@ export const AvatarResize = ({ image, setPreview, setImage }: AvatarResizeProps)
             max={3}
             step={0.1}
             aria-labelledby='Zoom'
-            onValueChange={zoom => {
-              setZoom(zoom[0])
-            }}
+            onValueChange={(value: number[]) => handleZoomChange(value[0])}
           />
         </div>
         <div className='w-full space-y-2'>
           <p className='text-sm text-start w-full'>Rotate</p>
           <Slider
-            defaultValue={[0]}
+            defaultValue={[rotation]}
             min={0}
             max={360}
             step={1}
             aria-labelledby='Rotation'
-            onValueChange={rotation => {
-              setRotation(rotation[0])
-            }}
+            onValueChange={(value: number[]) => handleRotationChange(value[0])}
           />
         </div>
       </div>
       <div className='py-2 w-full text-end space-x-2'>
-        <Button onClick={onClose} type='button' size='sm' variant='destructive'>
+        <Button onClick={handleClose} type='button' size='sm' variant='destructive'>
           Close
         </Button>
         <Button onClick={showCroppedImage} type='button' size='sm'>
@@ -95,3 +106,5 @@ export const AvatarResize = ({ image, setPreview, setImage }: AvatarResizeProps)
     </div>
   )
 }
+
+export default AvatarResize
