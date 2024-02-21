@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import React, { useState, useTransition } from 'react'
 
 import { useModal } from '@/hooks/use-dialog-store'
 import { DialogWrapper } from '@/components/models/model-wrapper'
@@ -22,6 +22,10 @@ import { cardAddUpdate } from '@/action/card-action'
 import toast from 'react-hot-toast'
 import { AvatarDropzone } from '@/components/upload-image/AvatarDropzone'
 import AvatarResize from '@/components/upload-image/AvatarResize'
+import { cn } from '@/lib/utils'
+import { DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { ScaleLoader } from 'react-spinners'
 
 export const CreateUpdateCard = () => {
   const [preview, setPreview] = useState<string | null>(null)
@@ -92,79 +96,84 @@ export const CreateUpdateCard = () => {
   }
 
   return (
-    <DialogWrapper
-      modelWidth='w-96'
-      open={isModalOpen}
-      setOpen={handelClose}
-      modelTitle='Add New Card'
-      modelDescription='Give your card a personality with a name and an image. You can always change it later.'
-      modelFooterButton='Add Card'
-      formID='add-card'
-      isPending={isPending}
-      FooterButtonIcon={IoAddOutline}
-    >
-      <Form {...form}>
-        <form id='add-card' onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
-          <div className='space-y-4'>
-            <div className='flex flex-col items-center justify-center text-center'>
-              {preview && !image && (
-                <AvatarResize image={preview} setPreview={setPreview} setImage={setImage} setError={setError} />
-              )}
-              {preview && image && (
-                <div className='relative mx-auto w-fit'>
-                  <Avatar className='mx-auto size-28 border-purple-400 border shadow-md'>
-                    <AvatarImage src={image} className='z-1' />
-                    <AvatarFallback>Icon</AvatarFallback>
-                  </Avatar>
-                  <MdDelete
-                    onClick={() => {
-                      setPreview('')
-                      setImage('')
-                      form.resetField('cardProfile')
-                      form.clearErrors()
-                    }}
-                    className='absolute right-1 top-0 z-10 size-6 cursor-pointer rounded-full bg-rose-500 p-1 text-white shadow-amber-100'
-                  />
-                </div>
-              )}
+    <DialogWrapper open={isModalOpen} setOpen={handelClose}>
+      <DialogContent className='sm:max-w-3xl overflow-hidden w-96'>
+        <DialogHeader>
+          <DialogTitle className='text-center text-xl font-bold'>Add New Card</DialogTitle>
+          <DialogDescription className='text-center text-zinc-500'>
+            Give your card a personality with a name and an image. You can always change it later.
+          </DialogDescription>
+        </DialogHeader>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
+            <div className='space-y-4'>
+              <div className='flex flex-col items-center justify-center text-center'>
+                {preview && !image && (
+                  <AvatarResize image={preview} setPreview={setPreview} setImage={setImage} setError={setError} />
+                )}
+                {preview && image && (
+                  <div className='relative mx-auto w-fit'>
+                    <Avatar className='mx-auto size-28 border-purple-400 border shadow-md'>
+                      <AvatarImage src={image} className='z-1' />
+                      <AvatarFallback>Icon</AvatarFallback>
+                    </Avatar>
+                    <MdDelete
+                      onClick={() => {
+                        setPreview('')
+                        setImage('')
+                        form.resetField('cardProfile')
+                        form.clearErrors()
+                      }}
+                      className='absolute right-1 top-0 z-10 size-6 cursor-pointer rounded-full bg-rose-500 p-1 text-white shadow-amber-100'
+                    />
+                  </div>
+                )}
+                <FormField
+                  control={form.control}
+                  name='cardProfile'
+                  render={({ field: { onChange, value, ...rest } }) => (
+                    <FormItem>
+                      <FormControl>
+                        <>
+                          {!preview && <AvatarDropzone onDrop={onDrop} />}
+                          <Input disabled={isPending} type='file' className='hidden' {...rest} />
+                        </>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <FormField
                 control={form.control}
-                name='cardProfile'
-                render={({ field: { onChange, value, ...rest } }) => (
+                name='name'
+                render={({ field }) => (
                   <FormItem>
+                    <FormLabel className='text-xs text-zinc-500 dark:text-secondary/70'>Card Name</FormLabel>
                     <FormControl>
-                      <>
-                        {!preview && <AvatarDropzone onDrop={onDrop} />}
-                        <Input disabled={isPending} type='file' className='hidden' {...rest} />
-                      </>
+                      <Input
+                        disabled={isPending}
+                        className='border-purple-300 text-black focus-visible:border-purple-500 focus-visible:ring-purple-400/50'
+                        placeholder='Enter card name'
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
             </div>
-            <FormField
-              control={form.control}
-              name='name'
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className='text-xs text-zinc-500 dark:text-secondary/70'>Card Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      disabled={isPending}
-                      className='border-purple-300 text-black focus-visible:border-purple-500 focus-visible:ring-purple-400/50'
-                      placeholder='Enter card name'
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <DialogFormError message={error} />
-        </form>
-      </Form>
+            <DialogFormError message={error} />
+            <DialogFooter>
+              <Button disabled={isPending} type='submit' variant='default' size='sm' className='w-28'>
+                {!isPending && <IoAddOutline size={16} className='mr-1' />}
+                {!isPending && <span>Add Card</span>}
+                <ScaleLoader loading={isPending} color='#FFFF' height={16} width={3} aria-label='Loading...' />
+              </Button>
+            </DialogFooter>
+          </form>
+        </Form>
+      </DialogContent>
     </DialogWrapper>
   )
 }

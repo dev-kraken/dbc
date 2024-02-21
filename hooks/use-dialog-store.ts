@@ -1,9 +1,10 @@
 import { create } from 'zustand'
+import { DeleteCard } from '@/types/dialog-types'
 
-export type ModalType = 'CreateUpdateCard' | 'SetAvatarSize'
+export type ModalType = 'CreateUpdateCard' | 'DeleteCard'
 
 interface ModalData {
-  server?: string
+  deleteCard?: DeleteCard
   apiUrl?: string
   query?: Record<string, any>
 }

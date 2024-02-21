@@ -44,3 +44,23 @@ export async function getAllCards(): Promise<AllCards[]> {
   await new Promise(resolve => setTimeout(resolve, 500))
   return await AxiosWrapper.get<AllCards[]>(`/api/Card/GetCardByUser`)
 }
+
+export async function deleteCard(cardID: string) {
+  await new Promise(resolve => setTimeout(resolve, 500))
+  try {
+    const response = await AxiosWrapper.post<ApiResponse>('/api/Card/CardDelete', { id: cardID })
+    revalidatePath('/dashboard/cards')
+    if (response.success) {
+      return {
+        success: 'Card added successfully !'
+      }
+    }
+    return {
+      error: 'Something went wrong !'
+    }
+  } catch (error) {
+    return {
+      error: 'Something went wrong !'
+    }
+  }
+}

@@ -13,7 +13,7 @@ export const DbcCardWrapper = ({ children, card }: DbcCardWrapperProps) => {
   return (
     <Card className='w-full rounded-sm shadow-md'>
       <CardHeader className='p-4'>
-        <DbcCardHeader cardImage={card.cardImageSysName} />
+        <DbcCardHeader cardImage={card.cardImageSysName} cardID={card.cardGuid} cardName={card.cardName} />
       </CardHeader>
       <CardContent className='mt-2 space-y-1 px-4'>
         <p className='text-xs italic text-muted-foreground'>Card Name</p>
