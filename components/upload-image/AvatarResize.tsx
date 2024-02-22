@@ -99,7 +99,7 @@ const AvatarResize: React.FC<AvatarResizeProps> = ({ image, setPreview, setImage
         <Button onClick={handleClose} type='button' size='sm' variant='destructive'>
           Close
         </Button>
-        <Button onClick={showCroppedImage} type='button' size='sm'>
+        <Button onClick={showCroppedImage} type='button' className="bg-emerald-600 hover:bg-emerald-700" size='sm'>
           Set Profile
         </Button>
       </div>

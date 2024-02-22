@@ -40,11 +40,11 @@ export const AvatarDropzone = ({ onDrop }: OnDropProps) => {
       >
         <input {...getInputProps()} />
         {!isDragActive && (
-          <div className='space-y-2 w-full text-center'>
+          <div className='space-y-3 w-full text-center'>
             <IoIosCloudUpload className='animate-in text-purple-600 w-full' size={35} />
-            <p className='text-md font-semibold'>DRAG FILE HERE</p>
-            <p className='text-xs text-muted-foreground'>Drag and drop a file here, or browse your computer.</p>
-            <Button type='button' onClick={open} variant='default' size='sm'>
+            <p className='text-md font-semibold p-0 m-0'>DRAG FILE HERE</p>
+            <p className='text-xs text-muted-foreground p-0 m-0'>Drag and drop a file here, or browse your computer.</p>
+            <Button type='button' onClick={open} variant='purpleButton' className="shadow" size='sm'>
               Browse File
             </Button>
           </div>

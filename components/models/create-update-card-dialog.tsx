@@ -165,7 +165,7 @@ export const CreateUpdateCard = () => {
             </div>
             <DialogFormError message={error} />
             <DialogFooter>
-              <Button disabled={isPending} type='submit' variant='default' size='sm' className='w-28'>
+              <Button disabled={isPending} type='submit' variant='purpleButton' size='sm' className='w-28'>
                 {!isPending && <IoAddOutline size={16} className='mr-1' />}
                 {!isPending && <span>Add Card</span>}
                 <ScaleLoader loading={isPending} color='#FFFF' height={16} width={3} aria-label='Loading...' />

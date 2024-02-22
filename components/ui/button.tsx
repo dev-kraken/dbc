@@ -16,7 +16,10 @@ const buttonVariants = cva(
         outline: 'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
         ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline'
+        link: 'text-primary underline-offset-4 hover:underline',
+        purpleButton:
+          'bg-gradient-to-r from-purple-500 via-10% via-purple-600 via-40% to-purple-800 to-90% text-white shadow' +
+          ' hover:bg-gradient-to-br'
       },
       size: {
         default: 'h-9 px-4 py-2',
