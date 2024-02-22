@@ -8,19 +8,18 @@ import { cn } from '@/lib/utils'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import { usePathname } from 'next/navigation'
-import { HomeSidebarRoutes } from '@/types/sidebar'
+import { MainSidebarRoutes } from '@/types/sidebar'
 
 interface NavProps {
   isCollapsed: boolean
-  links: HomeSidebarRoutes[]
+  links: MainSidebarRoutes[]
   menuTitle?: string
 }
 
 export function NavKraken({ links, isCollapsed, menuTitle }: NavProps) {
   const pathName = usePathname()
   return (
-    <TooltipProvider>
-      <div data-collapsed={isCollapsed} className='flex grow flex-col'>
+    <TooltipProvider data-collapsed={isCollapsed}>
         <h4 className='py-2 text-xs font-medium text-muted-foreground'>{menuTitle}</h4>
         <nav className='space-y-2'>
           {links.map((link, index) =>
@@ -75,7 +74,6 @@ export function NavKraken({ links, isCollapsed, menuTitle }: NavProps) {
             )
           )}
         </nav>
-      </div>
     </TooltipProvider>
   )
 }

@@ -3,7 +3,11 @@ import { Sidebar } from '@/components/sidebar/sidebar'
 import { SidebarHeader } from '@/components/sidebar/sidebar-header'
 import { Toaster } from 'react-hot-toast'
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+interface DashboardProps {
+  children: React.ReactNode
+}
+
+const AuthLayout = ({ children }: DashboardProps) => {
   return (
     <main className='flex min-h-screen justify-between'>
       <div className='hidden h-full md:block'>

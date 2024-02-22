@@ -5,6 +5,7 @@ import { AllCards } from '@/types/all-cards'
 import { Button } from '@/components/ui/button'
 import { MdOutlineEdit } from 'react-icons/md'
 import { HiOutlineExternalLink } from 'react-icons/hi'
+import Link from 'next/link'
 
 interface DbcCardWrapperProps {
   children: React.ReactNode
@@ -22,10 +23,12 @@ export const DbcCardWrapper = ({ children, card }: DbcCardWrapperProps) => {
         <h2 className='text-2xl font-medium text-zinc-700 truncate'>{children}</h2>
       </CardContent>
       <CardFooter className='flex gap-2 px-4'>
-        <Button className='w-full gap-1' variant='purpleButton' size='sm'>
-          <MdOutlineEdit size={15} />
-          Edit Card
-        </Button>
+        <Link className="w-full" href={`/dashboard/cards/${card.cardGuid}/card-profile`}>
+          <Button className='w-full gap-1' variant='purpleButton' size='sm'>
+            <MdOutlineEdit size={15} />
+            Edit Card
+          </Button>
+        </Link>
         <Button className='w-full bg-slate-500 gap-1' size='sm'>
           <HiOutlineExternalLink size={15} />
           Preview

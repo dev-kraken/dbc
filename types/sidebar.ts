@@ -1,6 +1,6 @@
 import { IconType } from 'react-icons'
 
-export type HomeSidebarRoutes = {
+export type MainSidebarRoutes = {
   title: string
   icon: IconType
   href: string
@@ -8,4 +8,3 @@ export type HomeSidebarRoutes = {
   variant?: string
 }
 
-export type HomeSidebar = HomeSidebarRoutes

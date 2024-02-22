@@ -1,10 +1,10 @@
 import { SiArlo } from 'react-icons/si'
-import { HomeMenu } from '@/components/sidebar/home-menu'
+import { MainMenu } from '@/components/sidebar/main-menu'
 import { signOut } from '@/auth'
 import React from 'react'
 import { Button } from '@/components/ui/button'
 import { AiOutlineLogout } from 'react-icons/ai'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { FcApproval, FcUnlock } from 'react-icons/fc'
 import { LiaRocketSolid } from 'react-icons/lia'
 
@@ -15,7 +15,7 @@ export const Sidebar = () => {
         <SiArlo size={32} color='#9333EA' />
         <h1 className='hidden text-2xl font-bold lg:block'>DBC</h1>
       </div>
-      <HomeMenu />
+      <MainMenu />
       <div className='space-y-4 pb-4'>
         <Card className='hidden lg:block w-full'>
           <CardHeader>
@@ -24,7 +24,7 @@ export const Sidebar = () => {
               Unlock Premium
             </CardTitle>
           </CardHeader>
-          <CardContent className="p-3">
+          <CardContent className='p-3'>
             <ul className='text-xs text-muted-foreground space-y-2'>
               <li className='flex items-start gap-1'>
                 <FcApproval size={20} />
