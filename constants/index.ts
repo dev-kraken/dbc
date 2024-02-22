@@ -1,33 +1,33 @@
-import { LuLayoutDashboard } from 'react-icons/lu'
-import { TbCards } from 'react-icons/tb'
-import { MdOutlineLeaderboard } from 'react-icons/md'
-import { IoQrCodeOutline, IoSettingsOutline } from 'react-icons/io5'
 import { HomeSidebar } from '@/types/sidebar'
+import { BiSolidDashboard, BiSolidMobileVibration } from 'react-icons/bi'
+import { RiSettings3Fill } from 'react-icons/ri'
+import { SiGoogleadsense } from 'react-icons/si'
+import { PiQrCodeFill } from 'react-icons/pi'
 
 export const HomeSidebarRoutes: HomeSidebar[] = [
   {
     title: 'Dashboard',
-    icon: LuLayoutDashboard,
+    icon: BiSolidDashboard,
     href: '/dashboard'
   },
   {
     title: 'Cards',
-    icon: TbCards,
+    icon: BiSolidMobileVibration,
     href: '/dashboard/cards'
   },
   {
     title: 'Leads',
-    icon: MdOutlineLeaderboard,
+    icon: SiGoogleadsense,
     href: '/conversation'
   },
   {
     title: 'QrCode',
-    icon: IoQrCodeOutline,
+    icon: PiQrCodeFill,
     href: '/qrcode'
   },
   {
     title: 'Settings',
-    icon: IoSettingsOutline,
+    icon: RiSettings3Fill,
     href: '/settings'
   }
 ]

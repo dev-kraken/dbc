@@ -9,6 +9,7 @@ import React, { useState } from 'react'
 import { deleteCard } from '@/action/card-action'
 import toast from 'react-hot-toast'
 import { DialogFormError } from '@/components/models/dialog-form-error'
+import { Badge } from '@/components/ui/badge'
 
 export const DeleteCardDialog = () => {
   const { isOpen, onClose, type, data } = useModal()
@@ -47,9 +48,9 @@ export const DeleteCardDialog = () => {
               Are you sure you want to delete this card?
             </DialogDescription>
           </DialogHeader>
-          <div className='space-y-3'>
-            <p className='text-sm font-semibold'>
-              Card Name: <span className='text-xl font-bold'>{cardInfo?.cardName}</span>
+          <div className='space-y-3 border-y py-2'>
+            <p className='text-sm font-medium'>
+              Card Name: <Badge variant="destructive" className='text-lg font-bold'>{cardInfo?.cardName}</Badge>
             </p>
             <DialogFormError message={error} />
           </div>
@@ -62,7 +63,7 @@ export const DeleteCardDialog = () => {
               size='sm'
               className='w-28'
             >
-              <MdDelete size={16} className='mr-1' />
+              <MdDelete size={16} className='mr-1 animate-pulse' />
               {!isPending && <span>Delete Card</span>}
               <ScaleLoader loading={isPending} color='#FFFF' height={16} width={3} aria-label='Loading...' />
             </Button>

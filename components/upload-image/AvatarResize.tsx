@@ -10,9 +10,10 @@ interface AvatarResizeProps {
   setPreview: (preview: string | null) => void
   setImage: (image: string | null) => void
   setError: (error: string | undefined) => void
+  handleCloseResize: () => void
 }
 
-const AvatarResize: React.FC<AvatarResizeProps> = ({ image, setPreview, setImage, setError }) => {
+const AvatarResize: React.FC<AvatarResizeProps> = ({ image, setPreview, setImage, setError, handleCloseResize }) => {
   const [crop, setCrop] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
   const [zoom, setZoom] = useState<number>(1)
   const [rotation, setRotation] = useState<number>(0)
@@ -43,12 +44,6 @@ const AvatarResize: React.FC<AvatarResizeProps> = ({ image, setPreview, setImage
       toast.error(error as string)
     }
   }, [image, croppedAreaPixels, rotation, setError, setPreview, setImage])
-
-  const handleClose = useCallback(() => {
-    setPreview(null)
-    setImage(null)
-    setError('')
-  }, [setPreview, setImage, setError])
 
   return (
     <div className='space-y-1'>
@@ -96,10 +91,10 @@ const AvatarResize: React.FC<AvatarResizeProps> = ({ image, setPreview, setImage
         </div>
       </div>
       <div className='py-2 w-full text-end space-x-2'>
-        <Button onClick={handleClose} type='button' size='sm' variant='destructive'>
+        <Button onClick={handleCloseResize} type='button' size='sm' variant='destructive'>
           Close
         </Button>
-        <Button onClick={showCroppedImage} type='button' className="bg-emerald-600 hover:bg-emerald-700" size='sm'>
+        <Button onClick={showCroppedImage} type='button' className='bg-emerald-600 hover:bg-emerald-700' size='sm'>
           Set Profile
         </Button>
       </div>

@@ -20,22 +20,27 @@ export function NavKraken({ links, isCollapsed, menuTitle }: NavProps) {
   const pathName = usePathname()
   return (
     <TooltipProvider>
-      <div data-collapsed={isCollapsed} className='group flex grow flex-col'>
+      <div data-collapsed={isCollapsed} className='flex grow flex-col'>
         <h4 className='py-2 text-xs font-medium text-muted-foreground'>{menuTitle}</h4>
         <nav className='space-y-2'>
-          {links.map((link, index)=>
+          {links.map((link, index) =>
             isCollapsed ? (
               <Tooltip key={index} delayDuration={0}>
                 <TooltipTrigger asChild>
                   <Link
                     href={link.href}
                     className={cn(
-                      link.href === pathName && 'bg-gradient-to-r from-purple-100 to-purple-400 text-slate-600',
-                      `group flex w-full cursor-pointer justify-center rounded-lg from-purple-100 to-purple-400 p-3 text-sm font-medium
-                      transition hover:bg-gradient-to-r hover:text-slate-600 items-center`
+                      link.href === pathName ? 'bg-gradient-to-l text-white border-0' : 'border',
+                      `group flex w-full cursor-pointer justify-center rounded-md from-purple-400 via-purple-600 to-purple-900 p-3 text-sm
+                      font-medium transition-all hover:bg-gradient-to-br items-center border`
                     )}
                   >
-                    <link.icon className='size-5 text-purple-600' />
+                    <link.icon
+                      className={cn(
+                        link.href === pathName ? 'text-white' : 'text-purple-600',
+                        'size-5 group-hover:text-white group-hover:animate-pulse'
+                      )}
+                    />
                     <span className='sr-only'>{link.title}</span>
                   </Link>
                 </TooltipTrigger>
@@ -49,12 +54,17 @@ export function NavKraken({ links, isCollapsed, menuTitle }: NavProps) {
                 key={index}
                 href={link.href}
                 className={cn(
-                  link.href === pathName && 'bg-gradient-to-r from-purple-100 to-purple-400 text-slate-600',
-                  `group flex w-full cursor-pointer justify-start rounded-lg from-purple-100 to-purple-400 p-3 text-sm font-medium
-                  transition hover:bg-gradient-to-r hover:text-slate-600`
+                  link.href === pathName ? 'bg-gradient-to-l text-white' : 'text-zinc-700',
+                  `group flex w-full cursor-pointer justify-start rounded-md from-purple-400 via-purple-600 to-purple-900 p-3 text-sm
+                  font-medium transition-all hover:bg-gradient-to-br hover:text-white gap-2 items-center`
                 )}
               >
-                <link.icon className='mr-2 size-5 text-purple-600' />
+                <link.icon
+                  className={cn(
+                    link.href === pathName ? 'text-white' : 'text-purple-600',
+                    'size-5 group-hover:text-white group-hover:animate-pulse'
+                  )}
+                />
                 {link.title}
                 {link.label && (
                   <span className={cn('ml-auto', link.variant === 'default' && 'text-background dark:text-white')}>

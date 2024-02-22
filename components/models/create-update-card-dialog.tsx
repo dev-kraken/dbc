@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useTransition } from 'react'
+import React, { useCallback, useState, useTransition } from 'react'
 
 import { useModal } from '@/hooks/use-dialog-store'
 import { DialogWrapper } from '@/components/models/model-wrapper'
@@ -94,6 +94,12 @@ export const CreateUpdateCard = () => {
       reader.readAsDataURL(file)
     })
   }
+  const handleCloseResize = useCallback(() => {
+    setPreview('')
+    setImage('')
+    setError('')
+    form.resetField('cardProfile')
+  }, [form])
 
   return (
     <DialogWrapper open={isModalOpen} setOpen={handelClose}>
@@ -109,7 +115,13 @@ export const CreateUpdateCard = () => {
             <div className='space-y-4'>
               <div className='flex flex-col items-center justify-center text-center'>
                 {preview && !image && (
-                  <AvatarResize image={preview} setPreview={setPreview} setImage={setImage} setError={setError} />
+                  <AvatarResize
+                    image={preview}
+                    handleCloseResize={handleCloseResize}
+                    setPreview={setPreview}
+                    setImage={setImage}
+                    setError={setError}
+                  />
                 )}
                 {preview && image && (
                   <div className='relative mx-auto w-fit'>
