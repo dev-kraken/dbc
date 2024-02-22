@@ -9,6 +9,8 @@ import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip
 import { TooltipProvider } from '@radix-ui/react-tooltip'
 import { usePathname } from 'next/navigation'
 import { MainSidebarRoutes } from '@/types/sidebar'
+import { SidebarNavSkeleton } from '@/components/sidebar/sidebar-nav.skeleton'
+import { Suspense } from 'react'
 
 interface NavProps {
   isCollapsed: boolean
@@ -20,8 +22,9 @@ export function NavKraken({ links, isCollapsed, menuTitle }: NavProps) {
   const pathName = usePathname()
   return (
     <TooltipProvider data-collapsed={isCollapsed}>
-        <h4 className='py-2 text-xs font-medium text-muted-foreground'>{menuTitle}</h4>
-        <nav className='space-y-2'>
+      <h4 className='py-2 text-xs font-medium text-muted-foreground'>{menuTitle}</h4>
+      <nav className='space-y-2'>
+        <Suspense fallback={<SidebarNavSkeleton />}>
           {links.map((link, index) =>
             isCollapsed ? (
               <Tooltip key={index} delayDuration={0}>
@@ -73,7 +76,8 @@ export function NavKraken({ links, isCollapsed, menuTitle }: NavProps) {
               </Link>
             )
           )}
-        </nav>
+        </Suspense>
+      </nav>
     </TooltipProvider>
   )
 }

@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import { useWindowWidth } from '@react-hook/window-size'
 import { NavKraken } from '@/components/ui/nav'
 import { useParams } from 'next/navigation'
@@ -12,7 +12,7 @@ import { PiQrCodeFill } from 'react-icons/pi'
 import { MdDynamicForm, MdStyle } from 'react-icons/md'
 import { BiSolidDashboard, BiSolidMobileVibration } from 'react-icons/bi'
 import { SiGoogleadsense } from 'react-icons/si'
-import { motion, HTMLMotionProps } from 'framer-motion'
+import { motion } from 'framer-motion'
 
 export const MainMenu = () => {
   const [isCollapsed, setIsCollapsed] = useState(false)
@@ -100,26 +100,26 @@ export const MainMenu = () => {
   return (
     <>
       {!!params?.cardID && (
-        <motion.div
-          className='grow'
-          initial={{ x: -10, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: 10, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <NavKraken isCollapsed={isCollapsed} links={sidebarRoutes} menuTitle='Card Menu' />
-        </motion.div>
+          <motion.div
+            className='grow'
+            initial={{ x: -10, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 10, opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <NavKraken isCollapsed={isCollapsed} links={sidebarRoutes} menuTitle='Card Menu' />
+          </motion.div>
       )}
       {!params?.cardID && (
-        <motion.div
-          className='grow'
-          initial={{ x: 10, opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -10, opacity: 0 }}
-          transition={{ duration: 0.4 }}
-        >
-          <NavKraken isCollapsed={isCollapsed} links={sidebarRoutes} menuTitle='General Menu' />
-        </motion.div>
+          <motion.div
+            className='grow'
+            initial={{ x: 10, opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: -10, opacity: 0 }}
+            transition={{ duration: 0.4 }}
+          >
+            <NavKraken isCollapsed={isCollapsed} links={sidebarRoutes} menuTitle='General Menu' />
+          </motion.div>
       )}
     </>
   )
