@@ -87,7 +87,7 @@ export default async function getCroppedImg(
 
   // As a blob
   return new Promise((resolve, reject) => {
-    const file = croppedCanvas.toDataURL('image/jpeg')
+    const file = croppedCanvas.toDataURL('image/png')
     if (file) {
       resolve(file)
     } else {

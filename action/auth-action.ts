@@ -20,12 +20,14 @@ export async function GetTokenDBC(): Promise<string | null> {
 
 export const RefreshToken = async () => {
   const session: Session | null = await auth()
-  const res = (await AxiosWrapper.get(
-    '/api/Auth/RefreshToken'
-  )) as unknown as RefreshTokenType
+  const res = (await AxiosWrapper.get('/api/Auth/RefreshToken')) as unknown as RefreshTokenType
 
   if (session && res.accessToken) {
     session.user.accessToken = res.accessToken
   }
   return session
+}
+
+export const getServerURL = () => {
+  return process.env.API_URL
 }
