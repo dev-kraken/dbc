@@ -18,12 +18,12 @@ export type AllSocialMediaInputs = {
     name: string
     priority: number
   }
+  value?: string
 }
 
 export type UserSelectedSocialMedia = {
   id: number
   label: string
   type: string
-  value: string
+  value?: string
 }
-

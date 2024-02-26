@@ -52,7 +52,7 @@ const getIconComponent = (iconName: string, className: string) => {
 
 interface AddSocialMediaProps {
   allSocialMediaInputs: AllSocialMediaInputs[]
-  addNewSocialMediaInput: (socialMediaInput: AllSocialMediaInputs) => void
+  addNewSocialMediaInput: (newSocialMediaInput: AllSocialMediaInputs) => void
 }
 
 export const AddSocialMedia = ({ allSocialMediaInputs, addNewSocialMediaInput }: AddSocialMediaProps) => {
@@ -69,9 +69,14 @@ export const AddSocialMedia = ({ allSocialMediaInputs, addNewSocialMediaInput }:
             variant='purpleButton'
             className='w-32 gap-2'
             disabled={socialMediaInput.disable}
-            onClick={() =>
-              addNewSocialMediaInput(socialMediaInput)
-            }
+            onClick={() => {
+              const newSocialMediaInput = {
+                ...socialMediaInput,
+                disable: true,
+                value: ''
+              }
+              addNewSocialMediaInput(newSocialMediaInput)
+            }}
           >
             {getIconComponent(socialMediaInput.icon, 'size-4')}
             {socialMediaInput.label}
