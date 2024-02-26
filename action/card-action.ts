@@ -8,7 +8,7 @@ import { AddCardSchemaBk } from '@/schemas/add-card-schema'
 import { ApiResponse } from '@/types/api-reponse'
 import { decode } from 'js-base64'
 import { ProfileCardBk } from '@/schemas/card-profile'
-import { CardProfile } from '@/types/card'
+import { AllSocialMediaInputs, CardProfile, UserSelectedSocialMedia } from '@/types/card'
 
 export async function cardAddUpdate(values: z.infer<typeof AddCardSchemaBk>) {
   const validatedFields = AddCardSchemaBk.safeParse(values)
@@ -105,4 +105,12 @@ export async function addUpdateCardProfile(values: z.infer<typeof ProfileCardBk>
 
 export async function getCardProfile(cardID: string): Promise<CardProfile> {
   return await AxiosWrapper.get(`/api/CardProfile/CardProfileGet?cardGuid=${cardID}`)
+}
+
+export async function getAllSocialMediaInputs() {
+  return await AxiosWrapper.get<AllSocialMediaInputs[]>('/api/SocialNetwork/SocialNetworkGetAll')
+}
+
+export async function getSelectedSocialMedia(cardID: string) {
+  return await AxiosWrapper.get<UserSelectedSocialMedia[]>(`/api/CardSocialNetwork/CardSocialNetworkGetByCard?cardGuid=${cardID}`)
 }
