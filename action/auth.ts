@@ -9,7 +9,7 @@ import { AxiosWrapper } from '@/lib/axios-wrapper'
 import { AxiosResponse } from 'axios'
 import { ApiResponse } from '@/types/api-reponse'
 
-export const login = async (values: z.infer<typeof LoginSchema>) => {
+export const login = async (values: z.infer<typeof LoginSchema>, callBackUrl?: string | null) => {
   const validatedFields = LoginSchema.safeParse(values)
 
   if (!validatedFields.success) {
@@ -24,7 +24,7 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     await signIn('credentials', {
       email,
       password,
-      redirectTo: DefaultLoginRedirect
+      redirectTo: callBackUrl || DefaultLoginRedirect
     })
   } catch (error) {
     if (error instanceof AuthError) {
@@ -52,17 +52,14 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
   const { fName, lName, email, password } = validatedFields.data
 
   try {
-    const response = await AxiosWrapper.normalPost<ApiResponse>(
-      '/api/Auth/SignUp',
-      {
-        firstName: fName,
-        lastName: lName,
-        email: email,
-        emailConfirm: email,
-        password: password,
-        passwordConfirm: password
-      }
-    )
+    const response = await AxiosWrapper.normalPost<ApiResponse>('/api/Auth/SignUp', {
+      firstName: fName,
+      lastName: lName,
+      email: email,
+      emailConfirm: email,
+      password: password,
+      passwordConfirm: password
+    })
 
     if (!response) {
       return { error: 'Something went wrong!' }
@@ -80,12 +77,9 @@ export const register = async (values: z.infer<typeof RegisterSchema>) => {
 
 export const newVerification = async (token: string) => {
   try {
-    const response = await AxiosWrapper.normalPost<ApiResponse>(
-      '/api/Auth/VerifyingAccount',
-      {
-        id: token
-      }
-    )
+    const response = await AxiosWrapper.normalPost<ApiResponse>('/api/Auth/VerifyingAccount', {
+      id: token
+    })
     if (!response) {
       return { error: 'Something went wrong!' }
     }
