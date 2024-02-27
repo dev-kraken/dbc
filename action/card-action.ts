@@ -9,6 +9,7 @@ import { ApiResponse } from '@/types/api-reponse'
 import { decode } from 'js-base64'
 import { ProfileCardBk } from '@/schemas/card-profile'
 import { AllSocialMediaInputs, CardProfile, UserSelectedSocialMedia } from '@/types/card'
+import { SocialMediaBK } from '@/schemas/social-media-schema'
 
 export async function cardAddUpdate(values: z.infer<typeof AddCardSchemaBk>) {
   const validatedFields = AddCardSchemaBk.safeParse(values)
@@ -87,7 +88,7 @@ export async function addUpdateCardProfile(values: z.infer<typeof ProfileCardBk>
       profileImageBase64: imageFilter,
       cardId
     })
-    revalidatePath(`/dashboard/cards/${cardId}/card-profile`)
+    revalidatePath(`/dashboard/cards/[cardID]/card-profile`, 'page')
     if (response.success) {
       return {
         success: isUpdate === 'update' ? 'Card updated successfully !' : 'Card added successfully !'
@@ -112,5 +113,32 @@ export async function getAllSocialMediaInputs() {
 }
 
 export async function getSelectedSocialMedia(cardID: string) {
-  return await AxiosWrapper.get<UserSelectedSocialMedia[]>(`/api/CardSocialNetwork/CardSocialNetworkGetByCard?cardGuid=${cardID}`)
+  return await AxiosWrapper.get<UserSelectedSocialMedia[]>(
+    `/api/CardSocialNetwork/CardSocialNetworkGetByCard?cardGuid=${cardID}`
+  )
+}
+
+export async function addCardSocialMedia(values: z.infer<typeof SocialMediaBK>, isUpdate: boolean) {
+  try {
+    const validatedFields = SocialMediaBK.safeParse(values)
+    if (!validatedFields.success) {
+      return {
+        error: 'Invalid fields !'
+      }
+    }
+    revalidatePath('/dashboard/cards/[cardID]/social-media', 'page')
+    const response = await AxiosWrapper.post<ApiResponse>('/api/CardSocialNetwork/CardSocialNetworkSet', values)
+    if (response.success) {
+      return {
+        success: isUpdate ? 'Social media updated successfully !' : 'Social media added successfully !'
+      }
+    }
+    return {
+      error: 'Something went wrong !'
+    }
+  } catch (error) {
+    return {
+      error: 'Something went wrong !'
+    }
+  }
 }

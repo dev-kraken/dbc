@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState, useTransition } from 'react'
 import { AddSocialMedia } from '@/components/cards/social-media/add-social-media'
 import { AllSocialMediaInputs, UserSelectedSocialMedia } from '@/types/card'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
@@ -12,26 +12,35 @@ import { SocialMedia } from '@/schemas/social-media-schema'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Form } from '@/components/ui/form'
 import { DropResult } from '@hello-pangea/dnd'
+import { addCardSocialMedia } from '@/action/card-action'
+import { login } from '@/action/auth'
+import { ScaleLoader } from 'react-spinners'
+import toast from 'react-hot-toast'
 
 interface CardSocialMediaListProps {
   allSocialMediaInputs: AllSocialMediaInputs[]
   userSelectedSocialMedia: UserSelectedSocialMedia[]
+  cardID: string
 }
 
-export const CardSocialMediaList = ({ allSocialMediaInputs, userSelectedSocialMedia }: CardSocialMediaListProps) => {
+export const CardSocialMediaList = ({
+  allSocialMediaInputs,
+  userSelectedSocialMedia,
+  cardID
+}: CardSocialMediaListProps) => {
   const [newSocialMediaInput, setNewSocialMediaInput] = useState<UserSelectedSocialMedia[] | []>(
     userSelectedSocialMedia
   )
   const [allSocialMediaInputButton, setAllSocialMediaInputButton] = useState<AllSocialMediaInputs[] | []>(
     allSocialMediaInputs
   )
-
+  const [isPending, startTransition] = useTransition()
   const form = useForm<z.infer<typeof SocialMedia>>({
     resolver: zodResolver(SocialMedia),
     defaultValues: {
       ...newSocialMediaInput.reduce(
         (acc, curr) => {
-          acc[curr.label] = curr?.value || ''
+          acc[curr.label] = curr.value || ''
           return acc
         },
         {} as Record<string, string>
@@ -40,7 +49,30 @@ export const CardSocialMediaList = ({ allSocialMediaInputs, userSelectedSocialMe
   })
 
   function onSubmit(values: z.infer<typeof SocialMedia>) {
-    console.log(values)
+    try {
+      if (!Object.keys(values).length) {
+        toast.error('Please add at least one social media link !')
+        return
+      }
+      const data = newSocialMediaInput.map((input, index) => ({
+        link: values[input.label] ?? '',
+        priority: index,
+        cardId: cardID,
+        socialNetworkId: input.id
+      }))
+      startTransition(() => {
+        addCardSocialMedia(data, !!userSelectedSocialMedia.length).then((data: any) => {
+          if (data?.error) {
+            toast.error(data?.error)
+          }
+          if (data?.success) {
+            toast.success(data?.success)
+          }
+        })
+      })
+    } catch (error) {
+      toast.error(error as string)
+    }
   }
 
   const addNewSocialMediaInput = (socialMediaInput: AllSocialMediaInputs) => {
@@ -66,7 +98,8 @@ export const CardSocialMediaList = ({ allSocialMediaInputs, userSelectedSocialMe
       return item
     })
     setAllSocialMediaInputButton(updateInputButton)
-    setNewSocialMediaInput(newSocialMediaInput.filter(item => item.label !== socialMediaInput.label))
+    const updatedInputs = newSocialMediaInput.filter(input => input.label !== socialMediaInput.label)
+    setNewSocialMediaInput(updatedInputs)
   }
 
   const onDragEnd = (result: DropResult) => {
@@ -77,6 +110,27 @@ export const CardSocialMediaList = ({ allSocialMediaInputs, userSelectedSocialMe
     setNewSocialMediaInput(items)
   }
 
+  useEffect(() => {
+    newSocialMediaInput.forEach(input => {
+      if (input.value !== '') {
+        form.setValue(input.label, input.value as string)
+      }
+    })
+
+    const labelsToValues = new Map()
+    newSocialMediaInput.forEach(item => {
+      labelsToValues.set(item.label, item.value)
+    })
+
+    setAllSocialMediaInputButton(prevAllSocialMediaInputButton => {
+      return prevAllSocialMediaInputButton.map(item => {
+        if (labelsToValues.has(item.label)) {
+          return { ...item, disable: true }
+        }
+        return item
+      })
+    })
+  }, [form, newSocialMediaInput])
   return (
     <div className='grid grid-cols-3 gap-3'>
       <div className='col-span-2'>
@@ -99,8 +153,10 @@ export const CardSocialMediaList = ({ allSocialMediaInputs, userSelectedSocialMe
                 </ScrollArea>
               </CardContent>
               <CardFooter>
-                <Button type='submit' variant='purpleButton' className='w-full'>
-                  Save Changes
+                <Button disabled={isPending} type='submit' variant='purpleButton' className='w-full'>
+                  {!isPending && userSelectedSocialMedia.length > 0 && 'Update Changes'}
+                  {!isPending && userSelectedSocialMedia.length === 0 && 'Save Changes'}
+                  <ScaleLoader loading={isPending} color='#FFFFFF' height={20} width={4} aria-label='Loading...' />
                 </Button>
               </CardFooter>
             </form>

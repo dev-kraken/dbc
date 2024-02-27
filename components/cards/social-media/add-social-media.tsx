@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { AllSocialMediaInputs, UserSelectedSocialMedia } from '@/types/card'
+import { AllSocialMediaInputs } from '@/types/card'
 import {
   FaFacebookF,
   FaInstagram,
@@ -15,7 +15,6 @@ import { BiLogoGmail, BiLogoTelegram } from 'react-icons/bi'
 import { BsPhoneFill } from 'react-icons/bs'
 import { AiOutlineGlobal } from 'react-icons/ai'
 import { SiZillow } from 'react-icons/si'
-import { MouseEventHandler } from 'react'
 
 const getIconComponent = (iconName: string, className: string) => {
   switch (iconName) {
@@ -67,7 +66,7 @@ export const AddSocialMedia = ({ allSocialMediaInputs, addNewSocialMediaInput }:
           <Button
             key={index}
             variant='purpleButton'
-            className='w-32 gap-2'
+            className='w-32 gap-2 disabled:pointer-events-auto disabled:cursor-not-allowed'
             disabled={socialMediaInput.disable}
             onClick={() => {
               const newSocialMediaInput = {

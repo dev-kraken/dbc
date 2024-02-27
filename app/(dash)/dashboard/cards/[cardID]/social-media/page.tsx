@@ -9,6 +9,7 @@ const SocialMedia = async ({ params }: { params: { cardID: string } }) => {
     <CardSocialMediaList
       allSocialMediaInputs={allSocialMediaInputs}
       userSelectedSocialMedia={userSelectedSocialMedia}
+      cardID={params.cardID}
     />
   )
 }

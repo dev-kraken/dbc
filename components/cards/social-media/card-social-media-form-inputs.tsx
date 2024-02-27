@@ -33,7 +33,7 @@ export const CardSocialMediaFormInputs = ({
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
                       ref={provided.innerRef}
-                      className='w-full border px-4 py-3 rounded-md'
+                      className='w-full border px-4 py-3 rounded-md bg-white'
                     >
                       <FormField
                         control={form.control}
@@ -43,13 +43,16 @@ export const CardSocialMediaFormInputs = ({
                             <div className='flex justify-between items-center mb-4 w-full'>
                               <FormLabel>{input.label}</FormLabel>
                               <MdDeleteOutline
-                                onClick={() => deleteSocialMediaInput(input)}
+                                onClick={() => {
+                                  form.unregister(input.value)
+                                  deleteSocialMediaInput(input)
+                                }}
                                 className='cursor-pointer text-destructive'
                                 size={20}
                               />
                             </div>
                             <FormControl>
-                              <Input placeholder={input.label} {...field} />
+                              <Input placeholder={input.label} {...field} value={field.value || ''} />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
