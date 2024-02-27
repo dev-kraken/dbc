@@ -23,6 +23,7 @@ import { encode } from 'js-base64'
 import { CardProfile } from '@/types/card'
 import { ImageURL } from '@/data/images-url'
 import { getImageFile } from '@/action/make-image'
+import Image from 'next/image'
 
 interface CardProfileFormProps {
   cardID: string
@@ -55,12 +56,11 @@ export const CardProfileForm = ({ cardID, profileInfo }: CardProfileFormProps) =
           form.setValue('cardProfile', [file])
           setIsImageChanged(false)
         }
+        setImage(ImageURL.profileImage(profileInfo?.profileImagesysName))
+        setPreview(ImageURL.profileImage(profileInfo?.profileImagesysName))
       })
     }
-    setImage(ImageURL.profileImage(profileInfo?.profileImagesysName))
-    setPreview(ImageURL.profileImage(profileInfo?.profileImagesysName))
-  }, [form, image, profileInfo])
-
+  }, [form, profileInfo])
 
   const onSubmit = (values: z.infer<typeof ProfileCard>) => {
     setError('')
@@ -142,13 +142,15 @@ export const CardProfileForm = ({ cardID, profileInfo }: CardProfileFormProps) =
                 {preview && image && (
                   <div className='relative mx-auto w-fit'>
                     <Avatar className='mx-auto size-36 border-purple-400 border shadow-md'>
-                      <AvatarImage src={image} className='z-1' />
+                      <AvatarImage src='/next.svg' className='z-1' alt='avatar-image' asChild>
+                        <Image src={image} alt='avatar-image' fill />
+                      </AvatarImage>
                       <AvatarFallback>Icon</AvatarFallback>
                     </Avatar>
                     <MdDelete
                       onClick={() => {
-                        setImage('')
                         setPreview('')
+                        setImage('')
                         setIsImageChanged(true)
                         form.resetField('cardProfile')
                         form.clearErrors()

@@ -77,7 +77,7 @@ export const MainMenu = () => {
     {
       title: 'Listings',
       icon: FaListUl,
-      href: `/dashboard/cards/${params?.cardID}/listings`
+      href: `/dashboard/cards/${params?.cardID}/card-listings`
     },
     {
       title: 'Reviews',
@@ -97,30 +97,5 @@ export const MainMenu = () => {
   ]
   const sidebarRoutes = params?.cardID ? CardSidebarRoutes : HomeSidebarRoutes
 
-  return (
-    <>
-      {!!params?.cardID && (
-          <motion.div
-            className='grow'
-            initial={{ x: -10, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: 10, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <NavKraken isCollapsed={isCollapsed} links={sidebarRoutes} menuTitle='Card Menu' />
-          </motion.div>
-      )}
-      {!params?.cardID && (
-          <motion.div
-            className='grow'
-            initial={{ x: 10, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -10, opacity: 0 }}
-            transition={{ duration: 0.4 }}
-          >
-            <NavKraken isCollapsed={isCollapsed} links={sidebarRoutes} menuTitle='General Menu' />
-          </motion.div>
-      )}
-    </>
-  )
+  return <NavKraken isCollapsed={isCollapsed} links={sidebarRoutes} menuTitle={params?.cardID ? 'Card' : 'Home'} />
 }

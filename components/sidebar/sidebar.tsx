@@ -15,7 +15,9 @@ export const Sidebar = () => {
         <SiArlo size={32} color='#9333EA' />
         <h1 className='hidden text-2xl font-bold lg:block'>DBC</h1>
       </div>
-      <MainMenu />
+      <div className='grow'>
+        <MainMenu />
+      </div>
       <div className='space-y-4 pb-4'>
         <Card className='hidden lg:block w-full'>
           <CardHeader>

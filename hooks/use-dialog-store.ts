@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { DeleteCard } from '@/types/dialog-types'
 
-export type ModalType = 'CreateUpdateCard' | 'DeleteCard'
+export type ModalType = 'CreateUpdateCard' | 'DeleteCard' | 'AddUpdateCardListing'
 
 interface ModalData {
   deleteCard?: DeleteCard
