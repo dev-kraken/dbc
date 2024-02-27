@@ -55,11 +55,12 @@ export const CardProfileForm = ({ cardID, profileInfo }: CardProfileFormProps) =
           form.setValue('cardProfile', [file])
           setIsImageChanged(false)
         }
-        setImage(ImageURL.profileImage(profileInfo?.profileImagesysName))
-        setPreview(ImageURL.profileImage(profileInfo?.profileImagesysName))
       })
     }
-  }, [form, profileInfo])
+    setImage(ImageURL.profileImage(profileInfo?.profileImagesysName))
+    setPreview(ImageURL.profileImage(profileInfo?.profileImagesysName))
+  }, [form, image, profileInfo])
+
 
   const onSubmit = (values: z.infer<typeof ProfileCard>) => {
     setError('')
@@ -82,7 +83,7 @@ export const CardProfileForm = ({ cardID, profileInfo }: CardProfileFormProps) =
       cardId: cardID
     }
     startTransition(() => {
-      addUpdateCardProfile(cardProfile , profileInfo?.profileName ? 'update' : 'add').then(data => {
+      addUpdateCardProfile(cardProfile, profileInfo?.profileName ? 'update' : 'add').then(data => {
         if (data?.success) {
           setTimeout(() => {
             setSuccess('')
@@ -146,8 +147,8 @@ export const CardProfileForm = ({ cardID, profileInfo }: CardProfileFormProps) =
                     </Avatar>
                     <MdDelete
                       onClick={() => {
-                        setPreview('')
                         setImage('')
+                        setPreview('')
                         setIsImageChanged(true)
                         form.resetField('cardProfile')
                         form.clearErrors()
@@ -255,11 +256,7 @@ export const CardProfileForm = ({ cardID, profileInfo }: CardProfileFormProps) =
           </CardContent>
           <CardFooter>
             <Button disabled={isPending} type='submit' variant='purpleButton' className='w-full'>
-              {!isPending && (
-                <>
-                  {profileInfo?.profileName ? 'Update Profile' : 'Add Profile'}
-                </>
-              )}
+              {!isPending && <>{profileInfo?.profileName ? 'Update Profile' : 'Add Profile'}</>}
               <ScaleLoader loading={isPending} color='#A855F7' height={20} width={4} aria-label='Loading...' />
             </Button>
           </CardFooter>

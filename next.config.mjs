@@ -9,8 +9,11 @@ const nextConfig = {
       }
     ]
   },
-  serverActions: {
-    bodySizeLimit: '10mb'
+  serverActions: true,
+  experimental: {
+    serverActions: {
+      bodySizeLimit: '50mb',
+    },
   },
   reactStrictMode: true
 }
