@@ -5,8 +5,8 @@ export const metadata = {
   title: 'Register',
   description: 'Create an account'
 }
-const LoginPage = () => {
+const RegisterPage = () => {
   return <RegisterForm />
 }
 
-export default LoginPage
+export default RegisterPage

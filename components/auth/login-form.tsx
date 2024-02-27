@@ -18,7 +18,7 @@ import { useSearchParams } from 'next/navigation'
 
 export const LoginForm = () => {
   const searchParams = useSearchParams()
-  const callBackUrl = searchParams.get('callbackUrl') as string
+  const callBackUrl = searchParams.get('callbackUrl') || ''
   const [error, setError] = useState<string | undefined>('')
   const [success, setSuccess] = useState<string | undefined>('')
   const [isPending, startTransition] = useTransition()
@@ -34,7 +34,7 @@ export const LoginForm = () => {
     setError('')
     setSuccess('')
     startTransition(() => {
-      login(values,callBackUrl).then(data => {
+      login(values, callBackUrl).then(data => {
         setError(data?.error)
         // setSuccess(data?.success)
       })
