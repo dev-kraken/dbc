@@ -17,12 +17,15 @@ import { AllStates } from '@/types/country-state'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 import { CardListingDropzone } from '@/components/upload-image/CardListingDropzone'
-import { AvatarDropzone } from '@/components/upload-image/AvatarDropzone'
+import Image from 'next/image'
+import { IoCloseSharp } from 'react-icons/io5'
+import { addUpdateCardListing } from '@/action/card-action'
 
 export const AddUpdateCardListing = () => {
   const { isOpen, onClose, type, data } = useModal()
   const [countryStates, setCountryStates] = useState<AllStates[]>([])
   const [isPending, startTransition] = useTransition()
+  const [listingImages, setListingImages] = useState<string[]>([])
   const isModalOpen = isOpen && type === 'AddUpdateCardListing'
   const form = useForm({
     resolver: zodResolver(CardListingSchema),
@@ -40,7 +43,7 @@ export const AddUpdateCardListing = () => {
       bedrooms: '',
       bathrooms: '',
       lotSize: '',
-      circle_image: ''
+      circle_image: [] as File[]
     }
   })
 
@@ -54,28 +57,63 @@ export const AddUpdateCardListing = () => {
   }, [form, type])
 
   const onSubmit = async (values: z.infer<typeof CardListingSchema>) => {
-    startTransition(() => {
-      console.log(values)
-    })
+    try {
+      const listListingPhoto: {
+        listingPhotoId: number
+        listingImageOrg: string
+        listingImageBase64: string
+        isDefault: boolean
+      }[] = []
+      if (values.circle_image && values.circle_image?.length > 0) {
+        listingImages.forEach((image, index) => {
+          listListingPhoto.push({
+            listingPhotoId: index,
+            listingImageOrg: (values.circle_image[index].name as string) || '',
+            listingImageBase64: listingImages[index] || '',
+            isDefault: index === 0
+          })
+        })
+      }
+      const dataValues = {
+        ...values,
+        cardGuid: data?.cardID as string,
+        listListingPhoto
+      }
+      delete dataValues.circle_image
+      startTransition(() => {
+        addUpdateCardListing(dataValues).then(r => {
+          console.log(r)
+        })
+      })
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const onDropListing = (acceptedFiles: File[]) => {
     acceptedFiles.forEach(file => {
       const reader = new FileReader()
-      reader.onabort = () => console.log('file reading was aborted')
-      reader.onerror = () => {
-        console.log('file reading has failed')
-      }
+      reader.onabort = () => console.log('File reading was aborted')
+      reader.onerror = error => console.error('File reading error:', error)
       reader.onload = () => {
-        // form.setValue('cardProfile', [file] as unknown as string)
-        // form.clearErrors('cardProfile')
-        // setPreview(reader.result as string)
+        const result = reader.result as string
+        if (result.startsWith('data:image')) {
+          form.setValue('circle_image', [...form.getValues('circle_image'), file] as unknown as [])
+          setListingImages([...listingImages, result])
+        } else {
+          console.error('Invalid image data:', result)
+        }
       }
       reader.readAsDataURL(file)
     })
   }
 
+  const removeUploadListingImg = (index: number) => {
+    setListingImages(listingImages.filter((_, i) => i !== index))
+  }
   const handelClose = () => {
+    form.reset()
+    setListingImages([])
     onClose()
   }
   return (
@@ -91,21 +129,36 @@ export const AddUpdateCardListing = () => {
                 </DialogDescription>
               </DialogHeader>
               <div className='space-y-3'>
-                <FormField
-                  control={form.control}
-                  name='circle_image'
-                  render={({ field: { onChange, value, ...rest } }) => (
-                    <FormItem>
-                      <FormControl>
-                        <>
-                          <CardListingDropzone onDrop={onDropListing} />
-                          <Input disabled={isPending} type='file' className='hidden' {...rest} />
-                        </>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                {listingImages.length > 0 && (
+                  <div className='grid grid-cols-3 gap-2 w-full'>
+                    {listingImages.map((image, index) => (
+                      <div key={index} className='w-full h-32 relative'>
+                        <Image src={image} alt={`image-${index}`} fill />
+                        <IoCloseSharp
+                          onClick={removeUploadListingImg.bind(null, index)}
+                          className='absolute -right-1 -top-2 z-10 h-6 w-6 cursor-pointer rounded-full bg-rose-500 p-1 text-white'
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {listingImages.length < 5 && (
+                  <FormField
+                    control={form.control}
+                    name='circle_image'
+                    render={({ field: { onChange, value, ...rest } }) => (
+                      <FormItem>
+                        <FormControl>
+                          <>
+                            <CardListingDropzone onDrop={onDropListing} />
+                            <Input disabled={isPending} type='file' className='hidden' {...rest} />
+                          </>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                )}
                 <div className='grid grid-cols-5 gap-3'>
                   <div className='col-span-2'>
                     <FormField

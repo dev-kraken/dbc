@@ -5,6 +5,7 @@ export type ModalType = 'CreateUpdateCard' | 'DeleteCard' | 'AddUpdateCardListin
 
 interface ModalData {
   deleteCard?: DeleteCard
+  cardID?: string
   apiUrl?: string
   query?: Record<string, any>
 }

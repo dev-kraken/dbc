@@ -9,56 +9,13 @@ import {
   TableRow
 } from '@/components/ui/table'
 import Image from 'next/image'
+import { AllCardListings as AllCardListingsT } from '@/types/card'
+import { ImageURL } from '@/data/images-url'
 
-const invoices = [
-  {
-    invoice: 'INV001',
-    paymentStatus: 'Paid',
-    totalAmount: '$250.00',
-    paymentMethod: 'Credit Card'
-  },
-  {
-    invoice: 'INV002',
-    paymentStatus: 'Pending',
-    totalAmount: '$150.00',
-    paymentMethod: 'PayPal'
-  },
-  {
-    invoice: 'INV003',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$350.00',
-    paymentMethod: 'Bank Transfer'
-  },
-  {
-    invoice: 'INV004',
-    paymentStatus: 'Paid',
-    totalAmount: '$450.00',
-    paymentMethod: 'Credit Card'
-  },
-  {
-    invoice: 'INV005',
-    paymentStatus: 'Paid',
-    totalAmount: '$550.00',
-    paymentMethod: 'PayPal'
-  },
-  {
-    invoice: 'INV006',
-    paymentStatus: 'Pending',
-    totalAmount: '$200.00',
-    paymentMethod: 'Bank Transfer'
-  },
-  {
-    invoice: 'INV007',
-    paymentStatus: 'Unpaid',
-    totalAmount: '$300.00',
-    paymentMethod: 'Credit Card'
-  }
-]
-
-export const AllCardListings = () => {
+export const AllCardListings = ({ allListings }: { allListings: AllCardListingsT }) => {
   return (
     <Table>
-      <TableCaption>A list of your recent invoices.</TableCaption>
+      <TableCaption>A list of your recent listings.</TableCaption>
       <TableHeader>
         <TableRow>
           <TableHead className='w-96'>Name (Built-in)</TableHead>
@@ -68,25 +25,20 @@ export const AllCardListings = () => {
         </TableRow>
       </TableHeader>
       <TableBody>
-        {invoices.map(invoice => (
-          <TableRow key={invoice.invoice}>
-            <TableCell className='font-medium'>
-              <div className="relative size-12 rounded-full">
-                <Image src="/demo-img.jpeg" alt="asd" className="rounded-full" fill/>
+        {allListings.map(async listing=>(
+          <TableRow key={listing.listingGuid}>
+            <TableCell className='font-medium flex items-center gap-2'>
+              <div className='relative size-12 rounded-full'>
+                <Image src={ImageURL.listingImage(listing.listListingPhoto[0].listingImageSys)} alt='asd' className='rounded-full' fill />
               </div>
+              <div>{listing.street + ', ' + listing.city + ', ' + listing.stateId + ', ' + listing.zipcode}</div>
             </TableCell>
-            <TableCell>{invoice.paymentStatus}</TableCell>
-            <TableCell>{invoice.paymentMethod}</TableCell>
-            <TableCell className='text-right'>{invoice.totalAmount}</TableCell>
+            <TableCell>{listing.yearBuilt}</TableCell>
+            <TableCell>{listing.price}</TableCell>
+            <TableCell className='text-right'>{listing.propertyType}</TableCell>
           </TableRow>
         ))}
       </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TableCell colSpan={3}>Total</TableCell>
-          <TableCell className='text-right'>$2,500.00</TableCell>
-        </TableRow>
-      </TableFooter>
     </Table>
   )
 }

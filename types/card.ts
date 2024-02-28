@@ -27,3 +27,32 @@ export type UserSelectedSocialMedia = {
   type: string
   value?: string
 }
+
+export type ListingPhoto = {
+  id: number;
+  listingImageOrg: string;
+  listingImageSys: string;
+  isDefault: boolean;
+};
+
+export type Listing = {
+  listingGuid: string;
+  street: string;
+  city: string | null;
+  propertyType: string;
+  price: string;
+  bedrooms: string;
+  bathrooms: string;
+  squareFootage: string;
+  lotSize: string;
+  yearBuilt: string;
+  description: string;
+  countryId: string;
+  stateId: string;
+  zipcode: string;
+  cardGuid: string | null;
+  status: boolean;
+  listListingPhoto: ListingPhoto[];
+};
+
+export type AllCardListings = Listing[];

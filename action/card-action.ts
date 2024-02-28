@@ -8,7 +8,7 @@ import { AddCardSchemaBk } from '@/schemas/add-card-schema'
 import { ApiResponse } from '@/types/api-reponse'
 import { decode } from 'js-base64'
 import { ProfileCardBk } from '@/schemas/card-profile'
-import { AllSocialMediaInputs, CardProfile, UserSelectedSocialMedia } from '@/types/card'
+import { AllCardListings, AllSocialMediaInputs, CardProfile, UserSelectedSocialMedia } from '@/types/card'
 import { SocialMediaBK } from '@/schemas/social-media-schema'
 
 export async function cardAddUpdate(values: z.infer<typeof AddCardSchemaBk>) {
@@ -141,4 +141,12 @@ export async function addCardSocialMedia(values: z.infer<typeof SocialMediaBK>, 
       error: 'Something went wrong !'
     }
   }
+}
+
+export async function addUpdateCardListing(values: any) {
+  return await AxiosWrapper.post<ApiResponse>('/api/Listing/ListingAdd', values)
+}
+
+export async function getCardListings(cardID: string) {
+  return await AxiosWrapper.get<AllCardListings>(`/api/Listing/ListingGetByCard?cardGuid=${cardID}`)
 }

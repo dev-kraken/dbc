@@ -5,5 +5,8 @@ export const ImageURL = {
   },
   profileImage: (profileImage: string) => {
     return `${MainUrl}/images/cardprofileimages/${profileImage}`
+  },
+  listingImage: (listingImage: string) => {
+    return `${MainUrl}/images/ListingPhotoImages/${listingImage}`
   }
 }
