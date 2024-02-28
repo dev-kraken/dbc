@@ -16,6 +16,8 @@ import { getCountryStates } from '@/action/get-states'
 import { AllStates } from '@/types/country-state'
 import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
+import { CardListingDropzone } from '@/components/upload-image/CardListingDropzone'
+import { AvatarDropzone } from '@/components/upload-image/AvatarDropzone'
 
 export const AddUpdateCardListing = () => {
   const { isOpen, onClose, type, data } = useModal()
@@ -57,6 +59,22 @@ export const AddUpdateCardListing = () => {
     })
   }
 
+  const onDropListing = (acceptedFiles: File[]) => {
+    acceptedFiles.forEach(file => {
+      const reader = new FileReader()
+      reader.onabort = () => console.log('file reading was aborted')
+      reader.onerror = () => {
+        console.log('file reading has failed')
+      }
+      reader.onload = () => {
+        // form.setValue('cardProfile', [file] as unknown as string)
+        // form.clearErrors('cardProfile')
+        // setPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    })
+  }
+
   const handelClose = () => {
     onClose()
   }
@@ -73,6 +91,21 @@ export const AddUpdateCardListing = () => {
                 </DialogDescription>
               </DialogHeader>
               <div className='space-y-3'>
+                <FormField
+                  control={form.control}
+                  name='circle_image'
+                  render={({ field: { onChange, value, ...rest } }) => (
+                    <FormItem>
+                      <FormControl>
+                        <>
+                          <CardListingDropzone onDrop={onDropListing} />
+                          <Input disabled={isPending} type='file' className='hidden' {...rest} />
+                        </>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
                 <div className='grid grid-cols-5 gap-3'>
                   <div className='col-span-2'>
                     <FormField
@@ -369,19 +402,19 @@ export const AddUpdateCardListing = () => {
                       )}
                     />
                   </div>
-                  <div className="col-span-6">
+                  <div className='col-span-6'>
                     <FormField
                       control={form.control}
-                      name="description"
+                      name='description'
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel className="text-xs font-bold uppercase text-zinc-500 dark:text-secondary/70">
+                          <FormLabel className='text-xs font-bold uppercase text-zinc-500 dark:text-secondary/70'>
                             Description
                           </FormLabel>
                           <FormControl>
                             <Textarea
-                              placeholder="Tell us a bit about your listing"
-                              className="resize-none"
+                              placeholder='Tell us a bit about your listing'
+                              className='resize-none'
                               {...field}
                             />
                           </FormControl>
