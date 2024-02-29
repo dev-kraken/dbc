@@ -1,11 +1,13 @@
 import { create } from 'zustand'
 import { DeleteCard } from '@/types/dialog-types'
+import { CardListing } from '@/types/card'
 
 export type ModalType = 'CreateUpdateCard' | 'DeleteCard' | 'AddUpdateCardListing'
 
 interface ModalData {
   deleteCard?: DeleteCard
   cardID?: string
+  listingData?: CardListing
   apiUrl?: string
   query?: Record<string, any>
 }

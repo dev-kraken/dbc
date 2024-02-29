@@ -35,7 +35,7 @@ export type ListingPhoto = {
   isDefault: boolean;
 };
 
-export type Listing = {
+export type CardListing = {
   listingGuid: string;
   street: string;
   city: string | null;
@@ -55,4 +55,4 @@ export type Listing = {
   listListingPhoto: ListingPhoto[];
 };
 
-export type AllCardListings = Listing[];
+export type AllCardListings = CardListing[];
