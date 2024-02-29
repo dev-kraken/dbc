@@ -95,7 +95,7 @@ export const LoginForm = () => {
           <AuthFormSuccess message={success} />
           <Button disabled={isPending} type='submit' className='w-full'>
             {!isPending && 'Login'}
-            <ScaleLoader loading={isPending} color='#A855F7' height={20} width={4} aria-label='Loading...' />
+            <ScaleLoader loading={isPending} color='#FFFFFF' height={20} width={4} aria-label='Loading...' />
           </Button>
         </form>
       </Form>
